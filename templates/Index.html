@@ -1,0 +1,40 @@
+<!-- templates/create_post.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+</head>
+<body>
+    <h1>Create Post</h1>
+
+    {% if errors %}
+        <div style="color: red;">
+            <ul>
+                {% for field, error_list in errors.items %}
+                    {% for error in error_list %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+
+        <label for="body">Body:</label><br>
+        <textarea id="body" name="body"></textarea><br>
+
+        <label for="categories">Categories:</label><br>
+        <input type="text" id="categories" name="categories"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
