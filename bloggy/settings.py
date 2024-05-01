@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import logfire
+
+logfire.configure(
+    token='wc45mx4NzzxP8c13MLc01nZ6ryMwVK1G2MLTKgFBqBsp',
+    project_name='bloggy'
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

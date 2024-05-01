@@ -6,10 +6,11 @@ class Post(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
-    categories = models.ManyToManyField("Category", related_name="posts")
+    category_pk = models.ForeignKey("Category", null=False, blank=False, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'post'
 
     def __str__(self):
         return self.title
+
