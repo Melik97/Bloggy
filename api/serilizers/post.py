@@ -1,24 +1,18 @@
 from rest_framework import serializers
 
-from api.models import Post, Category
-from api.serilizers.category import CategorySerializer
+from api.models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
-    category_pk = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(),
-        source='name',
-        write_only=True,
-    )
-    print(category_pk)
 
     class Meta:
         model = Post
-        fields = ['title', 'body', 'category_pk']
-        depth = 10
-        extra_kwargs = dict(
-            category_pk=dict(required=True),
-            title=dict(required=True),
-            body=dict(required=True),
-        )
+        fields = '__all__'
+        read_only_fields = ['category']
+        depth = 2
+
+        def create(self, validated_data):
+            # Make the field not required for updates
+            self.fields['category'].required = True
+            return super(validated_data).create()
 

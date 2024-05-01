@@ -6,7 +6,7 @@ class Post(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
-    category_pk = models.ForeignKey("Category", null=False, blank=False, on_delete=models.CASCADE)
+    category = models.ForeignKey("Category", null=False, blank=False, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'post'
