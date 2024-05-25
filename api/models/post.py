@@ -10,6 +10,7 @@ class Post(models.Model):
 
     class Meta:
         db_table = 'post'
+        # indexes = [models.Index(fields='title', name='name_idx'),]
 
     def __str__(self):
         return self.title
