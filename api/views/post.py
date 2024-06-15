@@ -1,16 +1,13 @@
-from django.shortcuts import render, redirect
+from django.db import transaction
 from rest_framework import generics
 from rest_framework.exceptions import NotFound
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from api.models import Post, Category
 from api.serilizers import PostSerializer
 
 
 class PostView(generics.ListCreateAPIView):
-    template_name = 'posts.html'
-    permission_classes = [AllowAny]
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
@@ -20,12 +17,19 @@ class PostView(generics.ListCreateAPIView):
             raise NotFound
         serializer.save(category=category)
 
-    def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return render(request, self.template_name, {'posts': serializer.data})
+    def get_permissions(self):
+        if self.request.method == 'CREATE':
+            self.permission_classes = [IsAuthenticated, IsAdminUser]
+        else:
+            self.permission_classes = []
 
-    def post(self, request, *args, **kwargs):
-        super().post(request, *args, **kwargs)
-        return redirect('create_list_posts', category_id=self.kwargs['category_id'])
+        return super(PostView, self).get_permissions()
+
+    @transaction.atomic
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        # logfire.info('Hello, {name}!', name='world')
+        return Post.objects.all()
 
