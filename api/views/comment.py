@@ -4,7 +4,6 @@ from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny
 
 from api.models import Post, Comment
-from api.serilizers import PostSerializer
 from api.serilizers.comment import CommentSerializer
 
 
